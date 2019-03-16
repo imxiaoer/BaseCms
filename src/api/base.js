@@ -5,9 +5,9 @@
  */
 
 const base = {
-  production: 'http://www.baidu.com',
-  develop: 'http://www.baidu.com',
-  test: 'http://www.baidu.com'
+  server1: 'http://www.baidu.com',
+  server2: 'http://www.baidu.com',
+  server3: 'http://www.baidu.com'
 }
 
 export default base
