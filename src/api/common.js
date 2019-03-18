@@ -6,9 +6,13 @@ import axios from '@/utils/http'
  */
 
 const common = {
-  // 登录
-  login () {
-    return axios.post(`${base.server1}/api/user/login`)
+  /**
+   * 登录
+   * @param {Object} user
+   * 参数 user 包含两个属性 { username: '', userpwd: '' }
+   */
+  login (user) {
+    return axios.post(`${base.server1}/api/login`, user)
   }
 }
 

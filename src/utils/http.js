@@ -37,7 +37,7 @@ const errorHandle = (status, other) => {
     case 403:
       tip('登录过期，请重新登录')
       localStorage.removeItem('token')
-      store.commit('loginSuccess', null)
+      // store.commit('loginSuccess', null)
       setTimeout(() => { toLogin() }, 1000)
       break
 
@@ -86,8 +86,12 @@ instance.interceptors.response.use(
       errorHandle(response.status, response.data.message)
       return Promise.reject(response)
     } else {
+      tip('请求未发出，超时或断网')
+      return Promise.reject(error)
       // 请求未发出，超时或断网
-      store.commit('changeNetwork', false)
+      // store.commit('changeNetwork', false)
     }
   }
 )
+
+export default instance

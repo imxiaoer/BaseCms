@@ -1,31 +1,52 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Login from './views/Login.vue'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
       path: '/login',
-      name: 'login',
-      component: Login
+      component: () => import('./views/Login.vue')
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/',
+      component: Home,
+      children: [
+        {
+          path: 'console',
+          name: 'console',
+          meta: { text: '主页' },
+          component: () => import('./views/console/Console.vue')
+        },
+        {
+          path: 'user',
+          name: 'user',
+          meta: { text: '用户' },
+          component: () => import('./views/user/User.vue')
+        },
+        {
+          path: 'role',
+          name: 'role',
+          meta: { text: '角色' },
+          component: () => import('./views/role/Role.vue')
+        }
+      ]
+    },
+    {
+      path: '/404',
+      name: '404',
+      meta: { text: '错误404' },
+      component: () => import('./views/404.vue')
+    },
+    {
+      path: '*',
+      redirect: { path: '/404' }
     }
   ]
 })
+
+export default router

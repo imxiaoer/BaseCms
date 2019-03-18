@@ -5,7 +5,7 @@
  */
 
 const base = {
-  server1: 'http://www.baidu.com',
+  server1: 'http://mapi.haicode123.com',
   server2: 'http://www.baidu.com',
   server3: 'http://www.baidu.com'
 }
