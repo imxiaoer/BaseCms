@@ -15,7 +15,7 @@
           <i class="el-icon-edit"></i>
         </button>
       </el-col>
-      <el-col :span="6" align="right">
+      <el-col :span="10" align="right">
         <span>{{ utils.todayDate() }}</span>
         <el-dropdown trigger="click" class="user-name" @command="handleCommand">
           <span class="el-dropdown-link">

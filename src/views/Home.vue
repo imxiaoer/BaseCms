@@ -1,6 +1,6 @@
 <template>
   <el-container class="home-box">
-    <el-aside width="asideWidth">
+    <el-aside width="200px">
       <div class="logo">
         BaseCms
       </div>
@@ -53,6 +53,8 @@ export default {
         border-bottom: 1px solid #f5f5f5;
         .el-tag {
           margin: 0 5px;
+          border-radius: 0;
+          border: none;
           cursor: pointer;
         }
       }

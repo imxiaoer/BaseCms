@@ -1,6 +1,7 @@
 <template>
   <div class="tool-box">
-    tool box
+    <el-button size="medium" type="primary" icon="el-icon-delete">新增</el-button>
+    <el-button size="medium" type="danger" icon="el-icon-delete">批量删除</el-button>
   </div>
 </template>
 
@@ -12,6 +13,7 @@ export default {
 
 <style lang="scss" scoped>
 .tool-box {
-  color: red;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
 }
 </style>
