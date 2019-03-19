@@ -7,8 +7,8 @@ import axios from '@/utils/http'
 
 const users = {
   // 列表
-  list () {
-    return axios.get(`${base.server1}/api/user/list`)
+  list (params) {
+    return axios.get(`${base.server1}/api/user/list`, { params: params })
   },
 
   // 新增

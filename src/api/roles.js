@@ -7,13 +7,13 @@ import axios from '@/utils/http'
 
 const roles = {
   // 列表
-  list () {
-    return axios.get(`${base.server1}/api/role/list`)
+  list (params) {
+    return axios.get(`${base.server1}/api/role`, { params: params })
   },
 
   // 新增
   add (role) {
-    return axios.post(`${base.server1}/api/role/insert`, role)
+    return axios.post(`${base.server1}/api/role/addrole`, role)
   },
 
   // 修改

@@ -53,6 +53,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$api.common.login(this.loginForm).then(res => {
+            localStorage.setItem('key', res.data.data.user_key)
             this.loading = false
             this.$router.replace({ path: 'console' })
           }, error => {
