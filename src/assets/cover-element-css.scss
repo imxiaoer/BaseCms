@@ -1,0 +1,14 @@
+/**
+ * 覆盖 element-ui 的样式
+*/
+
+.cover-el-tag {
+  margin: 0 5px;
+  border-radius: 0;
+  border: none;
+  cursor: pointer;
+}
+
+.cover-el-pagination {
+  margin-top: 20px;
+}

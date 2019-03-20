@@ -11,14 +11,10 @@
         <xhead/>
       </el-header>
       <el-main>
-        <div class="nav-tab">
-          <el-tag type="info" color="#fff">主 页</el-tag>
-          <el-tag type="info" closable color="#fff">用户</el-tag>
-          <el-tag closable color="#eee">角色</el-tag>
-          <el-tag type="info" closable color="#fff">权限</el-tag>
-          <el-tag type="info" closable color="#fff">设置</el-tag>
-        </div>
-        <router-view/>
+        <navtab/>
+        <keep-alive>
+          <router-view/>
+        </keep-alive>
       </el-main>
     </el-container>
   </el-container>
@@ -27,11 +23,13 @@
 <script>
 import xmenu from '@/components/menu/menu'
 import xhead from '@/components/head/head'
+import navtab from '@/components/navtab/navtab'
 export default {
   name: 'home',
   components: {
     xmenu,
-    xhead
+    xhead,
+    navtab
   }
 }
 </script>
@@ -47,17 +45,6 @@ export default {
     .el-main {
       height: 100%;
       padding: 0;
-      .nav-tab {
-        padding: 5px;
-        background-color: #f9f9f9;
-        border-bottom: 1px solid #f5f5f5;
-        .el-tag {
-          margin: 0 5px;
-          border-radius: 0;
-          border: none;
-          cursor: pointer;
-        }
-      }
     }
   }
   .el-aside {

@@ -1,7 +1,7 @@
 <template>
   <div class="tool-box">
-    <el-button size="medium" type="primary" icon="el-icon-delete">新增</el-button>
-    <el-button size="medium" type="danger" icon="el-icon-delete">批量删除</el-button>
+    <el-button size="small" type="primary" icon="el-icon-circle-plus-outline">新增</el-button>
+    <el-button size="small" type="danger" icon="el-icon-delete">批量删除</el-button>
   </div>
 </template>
 
