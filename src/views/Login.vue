@@ -56,7 +56,7 @@ export default {
             localStorage.setItem('key', res.data.data.user_key)
             this.loading = false
             this.$router.replace({ path: 'console' })
-          }, error => {
+          }, () => {
             this.loading = false
           })
         }
