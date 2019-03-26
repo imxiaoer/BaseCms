@@ -12,3 +12,25 @@
 .cover-el-pagination {
   margin-top: 20px;
 }
+
+.cover-el-container {
+  height: 100%;
+}
+
+.cover-el-main {
+  height: 100%;
+  padding: 0;
+}
+
+.cover-el-header {
+  border-bottom: 1px solid #f6f6f6;
+  box-sizing: border-box;
+  background-color: #fff;
+  line-height: 60px;
+}
+
+.cover-el-aside {
+  background-color: #20222A;
+  height: 100vh;
+  min-height: 100%;
+}

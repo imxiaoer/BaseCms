@@ -6,14 +6,26 @@
       v-for="(t, index) of tabs"
       :key="t.name"
       :closable="t.closable"
-      :color="(t.name === activeName ? '#ddd' : '#fff')"
+      :color="(t.name === current ? '#ddd' : '#fff')"
       @click="click(t.name)"
-      @close="close(index)">{{t.label}}</el-tag>
+      @close="close(index, t.name)">{{t.label}}</el-tag>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    tabs: {
+      type: Array,
+      required: true,
+      default: () => []
+    },
+    current: {
+      type: String,
+      required: true,
+      default: () => 'console'
+    }
+  },
   data () {
     return {
       tabs: [{
@@ -36,17 +48,20 @@ export default {
         label: '修改密码',
         name: 'password',
         closable: true
-      }],
-      activeName: 'role'
+      }]
     }
   },
   methods: {
     click (name) {
-      this.activeName = name
+      this.current = name
       this.$router.push(name)
     },
-    close (index) {
+    close (index, name) {
       this.tabs.splice(index, 1)
+      if (this.current === name) {
+        this.current = this.tabs[this.tabs.length - 1].name
+        this.$router.push(this.current)
+      }
     }
   }
 }

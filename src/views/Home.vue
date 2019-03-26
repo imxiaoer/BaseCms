@@ -1,20 +1,16 @@
 <template>
   <el-container class="home-box">
-    <el-aside width="200px">
-      <div class="logo">
-        BaseCms
-      </div>
+    <el-aside width="200px" class="cover-el-aside">
+      <div class="logo">BaseCms</div>
       <xmenu/>
     </el-aside>
-    <el-container>
-      <el-header>
+    <el-container class="cover-el-container">
+      <el-header class="cover-el-header">
         <xhead/>
       </el-header>
-      <el-main>
-        <navtab/>
-        <keep-alive>
-          <router-view/>
-        </keep-alive>
+      <el-main class="cover-el-main">
+        <navtab :tabs="" :current=""/>
+        <keep-alive><router-view/></keep-alive>
       </el-main>
     </el-container>
   </el-container>
@@ -30,6 +26,26 @@ export default {
     xmenu,
     xhead,
     navtab
+  },
+  watch: {
+    $route (to, from) {
+      let flag = false
+      for (let item of this.openTabs) {
+        if (item.name === to.name) {
+          this.setActiveName(to.name)
+          flag = true
+          break
+        }
+      }
+      if (!flag) {
+        this.addTabs({
+          name: to.name,
+          closable: true,
+          label: to.meta.text
+        })
+        this.setActiveName(to.name)
+      }
+    }
   }
 }
 </script>
@@ -40,34 +56,16 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
-  .el-container {
-    height: 100%;
-    .el-main {
-      height: 100%;
-      padding: 0;
-    }
-  }
-  .el-aside {
-    background-color: #20222A;
-    height: 100vh;
-    min-height: 100%;
-    .logo {
-      color: rgba(255,255,255,.8);
-      text-align: center;
-      height: 60px;
-      line-height: 60px;
-      font-size: 20px;
-      box-sizing: border-box;
-      border-bottom: 1px solid gray;
-      line-height: 60px;
-      letter-spacing: 2px;
-    }
-  }
-  .el-header {
-    border-bottom: 1px solid #f6f6f6;
-    box-sizing: border-box;
-    background-color: #fff;
+  .logo {
+    color: rgba(255,255,255,.8);
+    text-align: center;
+    height: 60px;
     line-height: 60px;
+    font-size: 20px;
+    box-sizing: border-box;
+    border-bottom: 1px solid gray;
+    line-height: 60px;
+    letter-spacing: 2px;
   }
 }
 </style>

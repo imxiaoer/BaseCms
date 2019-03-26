@@ -1,19 +1,17 @@
 // 标签页模块
 const navtab = {
   state: {
-    activeName: 'console',
-    openTabs: [{
+    current: 'console',
+    tabs: [{
       label: '主 页',
       name: 'console',
-      closable: false // 是否可以关闭
+      closable: false
     }]
   },
   mutations: {
-    // 添加标签页
     addTabs (state, data) {
-      state.openTabs.push(data)
+      state.tabs.push(data)
     },
-    // 移除标签页
     removeTabs (state, route) {
       let index = 0
       for (let item of state.openTabs) {
@@ -24,12 +22,11 @@ const navtab = {
       }
       state.openTabs.splice(index, 1)
     },
-    // 设置被激活的标签页
-    setActiveName (state, index) {
-      state.activeName = index
+    setCurrent (state, name) {
+      state.current = name
     },
     removeAllTabs (state) {
-      state.openTabs.splice(1, state.openTabs.length - 1)
+      state.tabs.splice(1, state.tabs.length - 1)
     }
   }
 }
