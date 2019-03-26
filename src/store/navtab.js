@@ -12,15 +12,8 @@ const navtab = {
     addTabs (state, data) {
       state.tabs.push(data)
     },
-    removeTabs (state, route) {
-      let index = 0
-      for (let item of state.openTabs) {
-        if (item.name === route) {
-          break
-        }
-        index++
-      }
-      state.openTabs.splice(index, 1)
+    removeTabs (state, index) {
+      state.tabs.splice(index, 1)
     },
     setCurrent (state, name) {
       state.current = name

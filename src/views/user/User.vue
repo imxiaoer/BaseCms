@@ -1,6 +1,6 @@
 <template>
   <div class="user-box">
-    <toolbox/>
+    <toolbox :quantity="3"/>
     <el-table
       :data="tableData"
       style="width: 100%">
@@ -82,7 +82,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .user-box {

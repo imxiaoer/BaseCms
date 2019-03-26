@@ -121,8 +121,7 @@ export default {
     },
     batchRemove () {
       console.log('ok')
-    },
-
+    }
   }
 }
 </script>

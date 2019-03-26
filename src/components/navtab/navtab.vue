@@ -26,42 +26,12 @@ export default {
       default: () => 'console'
     }
   },
-  data () {
-    return {
-      tabs: [{
-        label: '主 页',
-        name: 'console',
-        closable: false
-      },{
-        label: '角色',
-        name: 'role',
-        closable: true
-      },{
-        label: '用户',
-        name: 'user',
-        closable: true
-      },{
-        label: '权限',
-        name: 'permission',
-        closable: true
-      },{
-        label: '修改密码',
-        name: 'password',
-        closable: true
-      }]
-    }
-  },
   methods: {
     click (name) {
-      this.current = name
-      this.$router.push(name)
+      this.$emit('navclick', name)
     },
     close (index, name) {
-      this.tabs.splice(index, 1)
-      if (this.current === name) {
-        this.current = this.tabs[this.tabs.length - 1].name
-        this.$router.push(this.current)
-      }
+      this.$emit('navclose', index, name)
     }
   }
 }
@@ -74,5 +44,3 @@ export default {
   border-bottom: 1px solid #f5f5f5;
 }
 </style>
-
-
