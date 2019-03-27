@@ -15,6 +15,7 @@ let router = new Router({
     {
       path: '/',
       component: Home,
+      redirect: 'console',
       children: [
         {
           path: 'console',

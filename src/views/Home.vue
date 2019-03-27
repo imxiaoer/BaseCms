@@ -28,6 +28,16 @@ export default {
     xhead,
     navtab
   },
+  mounted () {
+    if (this.$route.path !== '/' && this.$route.path !== '/console') {
+      this.addTabs({
+        label: this.$route.meta.text,
+        name: this.$route.name,
+        closable: true
+      })
+    }
+    this.setCurrent(this.$route.name)
+  },
   methods: {
     ...mapMutations(['setCurrent', 'addTabs', 'removeTabs']),
     clicktab (name) {
