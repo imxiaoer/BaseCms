@@ -1,6 +1,8 @@
 <template>
   <div class="user-box">
-    <toolbox :quantity="3"/>
+    <toolbox :quantity="3">
+      <el-button @click="showhide">显示 / 隐藏</el-button>
+    </toolbox>
     <el-table
       :data="tableData"
       style="width: 100%">
@@ -45,18 +47,23 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="20">
     </el-pagination>
+
+    <drawer title="Basic Drawer" :show="show" @close="close"/>
   </div>
 </template>
 
 <script>
 import toolbox from '@/components/toolbox/toolbox'
+import drawer from '@/components/drawer/drawer'
 export default {
   components: {
-    toolbox
+    toolbox,
+    drawer
   },
   data () {
     return {
       list: [],
+      show: false,
       tableData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -78,7 +85,13 @@ export default {
   },
   methods: {
     edit () {},
-    remove () {}
+    remove () {},
+    showhide () {
+      this.show = !this.show
+    },
+    close () {
+      this.show = false
+    }
   }
 }
 </script>
