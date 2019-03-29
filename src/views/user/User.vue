@@ -1,7 +1,7 @@
 <template>
   <div class="user-box">
     <toolbox :quantity="3">
-      <el-button @click="showhide">显示 / 隐藏</el-button>
+      <el-button @click="showhide" size="small">显示 / 抽屉组件</el-button>
     </toolbox>
     <el-table
       :data="tableData"
@@ -48,7 +48,12 @@
       :total="20">
     </el-pagination>
 
-    <drawer title="Basic Drawer" :show="show" @close="close"/>
+    <drawer title="抽屉组件" v-model="show">
+      <p>姓名：小贰</p>
+      <p>性别：男</p>
+      <p>爱好：篮球，电影，音乐</p>
+      <p>住址：武汉市关山大道保利时代</p>
+    </drawer>
   </div>
 </template>
 
