@@ -2,27 +2,10 @@
   <div class="role-box">
     <toolbox @add="add" @batchRemove="batchRemove" :quantity="3"/>
 
-    <el-table
-      :data="tableData"
-      style="width: 100%">
-      <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column>
-      <el-table-column
-        prop="date"
-        label="日期"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址">
-      </el-table-column>
+    <el-table :data="list" style="width: 100%">
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column prop="addtime" label="日期" width="180"></el-table-column>
+      <el-table-column prop="rolename" label="角色名称"></el-table-column>
       <el-table-column label="操作" fixed="right" width="150">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" plain @click="edit(scope.row)">编辑</el-button>
@@ -41,14 +24,14 @@
     </el-pagination>
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogShow" width="500px">
-      <el-form :model="single">
+      <el-form :model="single" rel="relform">
         <el-form-item label="角色名称" :label-width="labelWidth">
-          <el-input v-model="single.Name" autocomplete="off"></el-input>
+          <el-input v-model="single.rolename" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogShow = false">取 消</el-button>
-        <el-button type="primary" @click="dialogShow = false">确 定</el-button>
+        <el-button type="primary" @click="commit('relform')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -63,29 +46,13 @@ export default {
   data () {
     return {
       list: [],
-      tableData: [{
-        date: '2016-05-02',
-        name: '角色管理',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '角色管理',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '角色管理',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '角色管理',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
       dialogShow: false,
       dialogTitle: '',
       labelWidth: '80px',
       single: {
-        Id: '',
-        Name: ''
+        id: '',
+        rolename: '',
+        addtime: ''
       },
       singleCopy: Object.assign({}, this.single)
     }
@@ -121,6 +88,10 @@ export default {
     },
     batchRemove () {
       console.log('ok')
+    },
+    commit (form) {
+      this.$api.roles.add()
+      console.log(form)
     }
   }
 }
