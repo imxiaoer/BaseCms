@@ -48,7 +48,7 @@
       :total="20">
     </el-pagination>
 
-    <drawer title="抽屉组件" v-model="show">
+    <drawer title="抽屉组件" :display.sync="show">
       <p>姓名：小贰</p>
       <p>性别：男</p>
       <p>爱好：篮球，电影，音乐</p>

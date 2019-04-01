@@ -3,6 +3,7 @@
     <slot/>
     <el-button size="small" type="primary" icon="el-icon-circle-plus-outline" @click="add">新增</el-button>
     <el-button size="small" type="danger" icon="el-icon-delete" @click="remove">批量删除</el-button>
+    <slot name="after"/>
   </div>
 </template>
 
@@ -11,7 +12,7 @@ export default {
   props: {
     quantity: {
       type: Number,
-      default: () => 0,
+      default: 0,
       required: true
     }
   },

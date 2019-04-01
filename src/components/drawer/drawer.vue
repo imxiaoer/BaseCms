@@ -1,10 +1,10 @@
 <template>
-  <div class="drawer" :class="{ active: control }">
-    <div :class="mask && value ? 'mask-show' : 'mask-hide'" @click="closeByMask"></div>
-    <div :class="value ? 'open' : 'close'">
+  <div class="drawer">
+    <div :class="maskClass" @click="closeByMask"></div>
+    <div :class="mainClass" :style="mainStyle" class="main">
       <div class="drawer-head">
-        <span style="float: left;">{{ title }}</span>
-        <span style="float: right;">X</span>
+        <span>{{ title }}</span>
+        <span class="close-btn" v-show="closable" @click="closeByButton">X</span>
       </div>
       <div class="drawer-body">
         <slot/>
@@ -17,19 +17,20 @@
 export default {
   props: {
     // 是否打开
-    value: {
+    display: {
       type: Boolean
     },
 
     // 标题
     title: {
-      type: String
+      type: String,
+      default: '标题'
     },
 
     // 是否显示关闭按钮
     closable: {
       type: Boolean,
-      default: false
+      default: true
     },
 
     // 是否显示遮罩
@@ -47,7 +48,7 @@ export default {
     // 宽度
     width: {
       type: String,
-      default: '40%'
+      default: '400px'
     },
 
     // 是否在父级元素中打开
@@ -56,25 +57,41 @@ export default {
       default: false
     }
   },
-  data () {
-    return {
-      control: this.value
+  computed: {
+    maskClass: function () {
+      return {
+        'mask-show': (this.mask && this.display),
+        'mask-hide': !(this.mask && this.display),
+        'inner': this.inner
+      }
+    },
+    mainClass: function () {
+      return {
+        'main-show': this.display,
+        'main-hide': !this.display,
+        'inner': this.inner
+      }
+    },
+    mainStyle: function () {
+      return {
+        width: this.width,
+        right: this.display ? '0' : `-${this.width}`,
+        borderLeft: this.mask ? 'none' : '1px solid #eee'
+      }
     }
   },
   mounted () {
-    console.log(this.control)
-    let box = this.$el.parentNode.parentNode
-    box.style.position = 'relative'
+    if (this.inner) {
+      let box = this.$el.parentNode.parentNode
+      box.style.position = 'relative'
+    }
   },
   methods: {
     closeByMask () {
-      console.log(this.control)
-      if (this.maskClosable) {
-        this.$emit('close')
-      }
+      this.maskClosable && this.$emit('update:display', false)
     },
     closeByButton () {
-      
+      this.$emit('update:display', false)
     }
   }
 }
@@ -100,39 +117,46 @@ export default {
   }
 
   /* 滑块 */
-  .close {
+  .main {
     position: fixed;
     z-index: 10;
-    right: -300px;
     top: 0;
-    width: 300px;
     height: 100%;
     background: #fff;
-    opacity: 0;
     transition: all 0.5s;
   }
-  .open {
-    position: fixed;
-    z-index: 10;
-    right: 0;
-    top: 0;
-    width: 300px;
-    height: 100%;
-    background: #fff;
+  .main-show {
     opacity: 1;
-    transition: all 0.5s;
-    .drawer-head {
-      height: 45px;
-      line-height: 45px;
-      padding: 0 15px;
-      font-size: 14px;
-      font-weight: bold;
-      border-bottom: 1px solid #eee;
+  }
+  .main-hide {
+    opacity: 0;
+  }
+
+  /* 某个元素内部显示 */
+  .inner {
+    position: absolute;
+  }
+
+  /* 其他样式 */
+  .drawer-head {
+    display: flex;
+    justify-content: space-between;
+    height: 45px;
+    line-height: 45px;
+    padding: 0 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+    .close-btn {
+      display: inline-block;
+      cursor: pointer;
+      height: 100%;
+      padding-left: 20px;
     }
-    .drawer-body {
-      font-size: 14px;
-      padding: 15px;
-    }
+  }
+  .drawer-body {
+    font-size: 14px;
+    padding: 15px;
   }
 }
 </style>
