@@ -4,7 +4,7 @@ import router from './router'
 import store from './store/index'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import '@/assets/cover-element-css.scss'
+import '@/style/cover-element-css.scss'
 import api from './api/index'
 import utils from './utils/utils'
 
