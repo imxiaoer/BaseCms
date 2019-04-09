@@ -3,15 +3,16 @@
  */
 
 import axios from 'axios'
-import qs from 'qs'
-import { Message } from 'element-ui'
+// import qs from 'qs'
+import { Notification } from 'element-ui'
 import router from '../router'
 import store from '../store'
 
 // 提示
 const tip = msg => {
-  Message({
-    type: 'warning',
+  Notification({
+    type: 'error',
+    title: '提示',
     message: msg
   })
 }
@@ -57,7 +58,7 @@ const errorHandle = (status, other) => {
 let instance = axios.create({
   timeout: 6000,
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
+    'Content-Type': 'application/json' // 'application/x-www-form-urlencoded'
   }
 })
 
@@ -68,7 +69,7 @@ instance.interceptors.request.use(
     // 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token
     // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码
     // 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。
-    config.data = qs.stringify(config.data) // 转为formdata数据格式
+    // config.data = qs.stringify(config.data) // 转为formdata数据格式
     const token = store.state.token
     token && (config.headers.Authorization = token)
     return config
@@ -81,10 +82,10 @@ instance.interceptors.response.use(
   // 请求成功
   // res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
   res => {
-    if (res.data.code === 200) {
+    if (res.data.status === 200) {
       return Promise.resolve(res)
     } else {
-      tip(res.data.msg)
+      tip(res.data.message)
       return Promise.reject(res)
     }
   },

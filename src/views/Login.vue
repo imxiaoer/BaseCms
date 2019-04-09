@@ -10,9 +10,9 @@
           prefix-icon="el-icon-goods">
         </el-input>
       </el-form-item>
-      <el-form-item prop="userpwd">
+      <el-form-item prop="password">
         <el-input :type="inputType"
-          v-model="loginForm.userpwd"
+          v-model="loginForm.password"
           @keyup.native.enter="login('loginForm')"
           autocomplete="off"
           placeholder="密 码:"
@@ -32,14 +32,14 @@ export default {
   data () {
     return {
       loginForm: {
-        username: 'xiaohai',
-        userpwd: '123456'
+        username: 'admin',
+        password: 'admin'
       },
       rules: {
         username: [
           { required: true, message: ' ', trigger: 'blur' }
         ],
-        userpwd: [
+        password: [
           { required: true, message: ' ', trigger: 'blur' }
         ]
       },
@@ -53,7 +53,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$api.common.login(this.loginForm).then(res => {
-            localStorage.setItem('key', res.data.data.user_key)
+            localStorage.setItem('token', res.data.data.token)
             this.loading = false
             this.$router.replace({ path: 'console' })
           }, () => {

@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/style/cover-element-css.scss'
 import api from './api/index'
 import utils from './utils/utils'
+import './mock/mock'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)

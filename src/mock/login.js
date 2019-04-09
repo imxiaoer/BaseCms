@@ -4,14 +4,14 @@
 
 import Mock from 'mockjs'
 
-Mock.mock('/api/login', 'post', option => {
+const login = Mock.mock('http://localhost:8080/api/login', 'post', option => {
   let { username, password } = JSON.parse(option.body)
   let result
   if (username === 'admin' && password === 'admin') {
     result = {
       status: 200,
       message: '登录成功',
-      data: { token: 'imtoken123456' }
+      data: { token: 'imtoken==' }
     }
   } else {
     result = {
@@ -22,3 +22,5 @@ Mock.mock('/api/login', 'post', option => {
   }
   return result
 })
+
+export default login
