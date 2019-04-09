@@ -60,6 +60,7 @@
 <script>
 import toolbox from '@/components/toolbox/toolbox'
 import drawer from '@/components/drawer/drawer'
+import model from '@/model/user'
 export default {
   components: {
     toolbox,
@@ -68,6 +69,7 @@ export default {
   data () {
     return {
       list: [],
+      single: Object.assign({}, model),
       show: false,
       tableData: [{
         date: '2016-05-02',
