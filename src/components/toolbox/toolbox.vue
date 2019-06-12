@@ -1,9 +1,9 @@
 <template>
   <div class="tool-box">
+    <slot name="before"/>
+    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="add">新增</el-button>
+    <el-button type="danger" icon="el-icon-delete" @click="remove">批量删除</el-button>
     <slot/>
-    <el-button size="small" type="primary" icon="el-icon-circle-plus-outline" @click="add">新增</el-button>
-    <el-button size="small" type="danger" icon="el-icon-delete" @click="remove">批量删除</el-button>
-    <slot name="after"/>
   </div>
 </template>
 
@@ -31,9 +31,7 @@ export default {
           type: 'warning'
         }).then(() => {
           this.$emit('batchRemove')
-        }).catch(() => {
-          console.log('取消删除')
-        })
+        }).catch(() => {})
       }
     }
   }
@@ -43,6 +41,6 @@ export default {
 <style lang="scss" scoped>
 .tool-box {
   border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
 }
 </style>

@@ -12,13 +12,13 @@ const users = {
   },
 
   // 新增
-  add (user) {
-    return axios.post(`${base.server1}/api/user/insert`, user)
+  add (model) {
+    return axios.post(`${base.server1}/api/user/insert`, model)
   },
 
   // 修改
-  modify (user) {
-    return axios.post(`${base.server1}/api/user/update`, user)
+  modify (model) {
+    return axios.post(`${base.server1}/api/user/update`, model)
   },
 
   /**

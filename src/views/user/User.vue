@@ -1,40 +1,16 @@
 <template>
-  <div class="user-box">
-    <toolbox :quantity="3">
-      <el-button @click="showhide" size="small">显示 / 抽屉组件</el-button>
-    </toolbox>
-    <el-table
-      :data="tableData"
-      style="width: 100%">
-      <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column>
-      <el-table-column
-        prop="date"
-        label="日期"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址">
-      </el-table-column>
+  <div class="box">
+    <toolbox :quantity="selected.length" @add="add" @batchRemove="batchRemove"/>
+
+    <el-table :data="tableData">
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column prop="date" label="日期" width="180"></el-table-column>
+      <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+      <el-table-column prop="address" label="地址"></el-table-column>
       <el-table-column label="操作" fixed="right" width="150">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            plain
-            @click="edit(scope.row)">编辑</el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="remove(scope.row)">删除</el-button>
+          <el-button size="mini" type="primary" plain @click="edit(scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="remove(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -47,30 +23,27 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="20">
     </el-pagination>
-
-    <drawer title="抽屉组件" :display.sync="show" :inner="true">
-      <p>姓名：小贰</p>
-      <p>性别：男</p>
-      <p>爱好：篮球，电影，音乐</p>
-      <p>住址：武汉市关山大道保利时代</p>
-    </drawer>
   </div>
 </template>
 
 <script>
 import toolbox from '@/components/toolbox/toolbox'
-import drawer from '@/components/drawer/drawer'
 import model from '@/model/user'
 export default {
-  components: {
-    toolbox,
-    drawer
-  },
+  components: { toolbox },
   data () {
     return {
       list: [],
-      single: Object.assign({}, model),
-      show: false,
+      single: {
+        Id: '',
+        CreateDate: '',
+        RoleId: '',
+        Name: '',
+        Mobile: '',
+        Address: ''
+      },
+      singleCopy: {},
+      selected: [],
       tableData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -90,21 +63,20 @@ export default {
       }]
     }
   },
+  created () {
+    Object.assign(this.singleCopy, this.single)
+  },
   methods: {
+    get () {
+      this.$api.users.list().then(res => {
+        this.list = res.data.list
+        this.total = res.data.total
+      })
+    },
+    add () {},
     edit () {},
     remove () {},
-    showhide () {
-      this.show = !this.show
-    },
-    close () {
-      this.show = false
-    }
+    batchRemove () {}
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.user-box {
-  padding: 40px 20px 20px 20px;
-}
-</style>

@@ -3,7 +3,6 @@
  */
 
 import axios from 'axios'
-// import qs from 'qs'
 import { Notification } from 'element-ui'
 import router from '../router'
 import store from '../store'
@@ -80,7 +79,6 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
   // 请求成功
-  // res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
   res => {
     if (res.data.status === 200) {
       return Promise.resolve(res)

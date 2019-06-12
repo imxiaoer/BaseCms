@@ -8,7 +8,7 @@
         <button class="btn-tool" title="刷新" @click="refresh">
             <i class="el-icon-refresh"></i>
         </button>
-        <button class="btn-tool" title="全屏" @click="utils.fullScreen">
+        <button class="btn-tool" title="全屏" @click="$utils.fullScreen">
             <i class="el-icon-rank"></i>
         </button>
         <button class="btn-tool" title="便签" @click="dialogVisible = true" >
@@ -16,7 +16,7 @@
         </button>
       </el-col>
       <el-col :span="10" align="right">
-        <span>{{ utils.todayDate() }}</span>
+        <!-- <span>{{ $utils.todayDate() }}</span> -->
         <el-dropdown trigger="click" class="user-name" @command="handleCommand">
           <span class="el-dropdown-link">
             {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
