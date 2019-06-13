@@ -7,24 +7,23 @@ import axios from '@/utils/http'
 
 const roles = {
   // 列表
-  list (params) {
-    return axios.get(`${base.server1}/api/role`, { params: params })
+  list (params = {}) {
+    return axios.get(`${base.server1}/api/role/list`, { params: params })
   },
 
   // 新增
-  add (role) {
-    return axios.post(`${base.server1}/api/role/addrole`, role)
+  add (model) {
+    return axios.post(`${base.server1}/api/role/insert`, model)
   },
 
   // 修改
-  modify (role) {
-    return axios.post(`${base.server1}/api/role/update`, role)
+  modify (model) {
+    return axios.post(`${base.server1}/api/role/update`, model)
   },
 
   /**
    * 删除
    * 批量删除和单个删除共用这一个方法
-   * 因为 delete 是 JS 关键字，所以方法名用 remove
    * @param {Array} ids
    */
   remove (ids) {

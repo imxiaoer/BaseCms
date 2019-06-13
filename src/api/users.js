@@ -7,7 +7,7 @@ import axios from '@/utils/http'
 
 const users = {
   // 列表
-  list (params) {
+  list (params = {}) {
     return axios.get(`${base.server1}/api/user/list`, { params: params })
   },
 
@@ -24,7 +24,6 @@ const users = {
   /**
    * 删除
    * 批量删除和单个删除共用这一个方法
-   * 因为 delete 是 JS 关键字，所以方法名用 remove
    * @param {Array} ids
    */
   remove (ids) {

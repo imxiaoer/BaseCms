@@ -3,26 +3,18 @@
  */
 
 import axios from 'axios'
-import { Notification } from 'element-ui'
 import router from '../router'
 import store from '../store'
+import { Message } from 'element-ui'
 
 // 提示
-const tip = msg => {
-  Notification({
-    type: 'error',
-    title: '提示',
-    message: msg
-  })
-}
+const tip = msg => Message.error(msg)
 
 // 跳转到登录页
 const toLogin = () => {
   router.replace({
     path: '/login',
-    query: {
-      redirect: router.currentRoute.fullPath
-    }
+    query: { redirect: router.currentRoute.fullPath }
   })
 }
 
@@ -36,7 +28,7 @@ const errorHandle = (status, other) => {
 
     // 登录过期，清除token，跳转到登录页
     case 403:
-      tip('登录过期，请重新登录')
+      tip('登录过期，请重新登录！')
       localStorage.removeItem('token')
       // store.commit('loginSuccess', null)
       setTimeout(() => { toLogin() }, 1000)
@@ -44,7 +36,7 @@ const errorHandle = (status, other) => {
 
     // 未找到资源
     case 404:
-      tip('请求的资源不存在')
+      tip('请求的资源不存在！')
       break
 
     // 其他状态码
@@ -56,9 +48,7 @@ const errorHandle = (status, other) => {
 // 实例对象
 let instance = axios.create({
   timeout: 6000,
-  headers: {
-    'Content-Type': 'application/json' // 'application/x-www-form-urlencoded'
-  }
+  headers: { 'Content-Type': 'application/json' }
 })
 
 // 请求拦截器
@@ -68,7 +58,6 @@ instance.interceptors.request.use(
     // 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token
     // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码
     // 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。
-    // config.data = qs.stringify(config.data) // 转为formdata数据格式
     const token = store.state.token
     token && (config.headers.Authorization = token)
     return config
@@ -80,7 +69,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   // 请求成功
   res => {
-    if (res.data.status === 200) {
+    if (res.data.code === 200) {
       return Promise.resolve(res)
     } else {
       tip(res.data.message)
@@ -96,7 +85,7 @@ instance.interceptors.response.use(
       errorHandle(response.status, response.data.message)
       return Promise.reject(response)
     } else {
-      tip('请求未发出，超时或断网')
+      tip('请求未响应，超时或断网')
       return Promise.reject(error)
       // 请求未发出，超时或断网
       // store.commit('changeNetwork', false)

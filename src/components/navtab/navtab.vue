@@ -1,6 +1,7 @@
 <template>
   <div class="nav-tab">
     <el-tag
+      size="medium"
       class="cover-el-tag"
       type="info"
       v-for="(t, index) of tabs"
@@ -23,7 +24,7 @@ export default {
     current: {
       type: String,
       required: true,
-      default: () => 'console'
+      default: 'console'
     }
   },
   methods: {

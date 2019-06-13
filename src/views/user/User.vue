@@ -1,12 +1,25 @@
 <template>
   <div class="box">
+    <div class="search-box">
+      <el-form :inline="true" :model="search">
+        <el-form-item label="姓名">
+          <el-input v-model="search.name" placeholder="请输入姓名"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="init">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
     <toolbox :quantity="selected.length" @add="add" @batchRemove="batchRemove"/>
 
-    <el-table :data="tableData">
+    <el-table :data="list">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="date" label="日期" width="180"></el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-      <el-table-column prop="address" label="地址"></el-table-column>
+      <el-table-column prop="CreateTime" label="日期" width="180"></el-table-column>
+      <el-table-column prop="Name" label="姓名" width="180"></el-table-column>
+      <el-table-column prop="RoleId" label="角色" width="180"></el-table-column>
+      <el-table-column prop="Mobile" label="手机" width="180"></el-table-column>
+      <el-table-column prop="Address" label="地址"></el-table-column>
       <el-table-column label="操作" fixed="right" width="150">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" plain @click="edit(scope.row)">编辑</el-button>
@@ -19,9 +32,11 @@
       class="cover-el-pagination"
       background
       :page-sizes="[10, 20, 30, 50]"
-      :page-size="10"
+      :page-size="search.size"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="20">
+      :total="total"
+      @size-change="sizeChange"
+      @current-change="indexChange">
     </el-pagination>
   </div>
 </template>
@@ -34,49 +49,47 @@ export default {
   data () {
     return {
       list: [],
+      total: 0,
       single: {
-        Id: '',
-        CreateDate: '',
+        Id: null,
         RoleId: '',
         Name: '',
         Mobile: '',
-        Address: ''
+        Address: '',
+        CreateTime: ''
       },
       singleCopy: {},
       selected: [],
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
+      search: {
+        name: '',
+        index: 1,
+        size: 10
+      }
     }
   },
   created () {
     Object.assign(this.singleCopy, this.single)
+    this.init()
   },
   methods: {
-    get () {
-      this.$api.users.list().then(res => {
-        this.list = res.data.list
-        this.total = res.data.total
+    init () {
+      this.$api.users.list(this.search).then(res => {
+        this.list = res.data.data.list
+        this.total = res.data.data.total
       })
     },
     add () {},
     edit () {},
     remove () {},
-    batchRemove () {}
+    batchRemove () {},
+    sizeChange ($event) {
+      this.search.size = $event
+      this.init()
+    },
+    indexChange ($event) {
+      this.search.index = $event
+      this.init()
+    }
   }
 }
 </script>

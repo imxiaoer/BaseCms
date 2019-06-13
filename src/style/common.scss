@@ -3,5 +3,31 @@
 */
 
 .box {
+  height: calc(100% - 80px);
   padding: 20px;
+  overflow-y: auto;
+}
+.search-box {
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px dashed #ddd;
+}
+
+/*
+ * 滚动条样式设置
+*/
+::-webkit-scrollbar-track-piece {
+  background-color:#f8f8f8;
+}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background-color:#ddd;
+  background-clip:padding-box;
+  min-height:28px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color:#bbb;
 }
