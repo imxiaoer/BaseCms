@@ -20,9 +20,9 @@ const roles = {
   add: Mock.mock(new RegExp('/api/role/insert'), 'post', option => {
     let date = new Date()
     datas.unshift({
-      'Id': datas.length + 1,
-      'Name': JSON.parse(option.body).Name,
-      'CreateTime': `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
+      Id: datas.length + 1,
+      Name: JSON.parse(option.body).Name,
+      CreateTime: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
     })
     return {
       code: 200,

@@ -12,7 +12,7 @@ export default {
       for (let i = 0; i < arrPara.length; i++) {
         arr = arrPara[i].split('=')
         if (arr != null && arr[0] === key) {
-          return arr[1]
+          return decodeURI(arr[1])
         }
       }
       return ''

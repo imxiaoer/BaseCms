@@ -52,10 +52,14 @@ const users = {
   }),
   add: Mock.mock(new RegExp('/api/user/insert'), 'post', option => {
     let date = new Date()
+    let body = JSON.parse(option.body)
     datas.unshift({
-      'Id': datas.length + 1,
-      'Name': JSON.parse(option.body).Name,
-      'CreateTime': `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
+      Id: datas.length + 1,
+      Name: body.Name,
+      RoleId: body.RoleId,
+      Mobile: body.Mobile,
+      Address: body.Address,
+      CreateTime: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
     })
     return {
       code: 200,
@@ -67,6 +71,9 @@ const users = {
     datas.forEach(item => {
       if (item.Id === body.Id) {
         item.Name = body.Name
+        item.RoleId = body.RoleId
+        item.Mobile = body.Mobile
+        item.Address = body.Address
       }
     })
     return {

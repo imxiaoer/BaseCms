@@ -5,23 +5,30 @@
         <el-form-item label="姓名">
           <el-input v-model="search.name" placeholder="请输入姓名"></el-input>
         </el-form-item>
+        <el-form-item label="手机">
+          <el-input v-model="search.name" placeholder="请输入手机号"></el-input>
+        </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="init">查询</el-button>
+          <el-button type="primary" @click="get">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <toolbox :quantity="selected.length" @add="add" @batchRemove="batchRemove"/>
 
-    <el-table :data="list">
+    <el-table :data="list" @selection-change="select">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="CreateTime" label="日期" width="180"></el-table-column>
-      <el-table-column prop="Name" label="姓名" width="180"></el-table-column>
-      <el-table-column prop="RoleId" label="角色" width="180"></el-table-column>
-      <el-table-column prop="Mobile" label="手机" width="180"></el-table-column>
-      <el-table-column prop="Address" label="地址"></el-table-column>
+      <el-table-column prop="CreateTime" label="日期"></el-table-column>
+      <el-table-column prop="Name" label="姓名"></el-table-column>
+      <el-table-column label="角色">
+        <template v-slot="scope">
+          {{scope.row.RoleId | showName(roles)}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="Mobile" label="手机"></el-table-column>
+      <el-table-column prop="Address" label="地址" width="250"></el-table-column>
       <el-table-column label="操作" fixed="right" width="150">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button size="mini" type="primary" plain @click="edit(scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="remove(scope.row)">删除</el-button>
         </template>
@@ -38,12 +45,35 @@
       @size-change="sizeChange"
       @current-change="indexChange">
     </el-pagination>
+
+    <el-dialog :title="dialogTitle" :visible.sync="dialogShow" width="400px" @closed="clearValidate('relform')">
+      <el-form :model="single" ref="relform" :rules="rules">
+        <el-form-item label="用户名称" :label-width="labelWidth" prop="Name">
+          <el-input v-model.trim="single.Name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="所属角色" :label-width="labelWidth" prop="RoleId">
+          <el-select v-model="single.RoleId" placeholder="请选择角色">
+            <el-option v-for="r of roles" :label="r.Name" :value="r.Id" :key="r.Id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="手机号码" :label-width="labelWidth" prop="Mobile">
+          <el-input v-model.trim="single.Mobile" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="现居地址" :label-width="labelWidth">
+          <el-input v-model.trim="single.Address" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogShow = false">取 消</el-button>
+        <el-button type="primary" @click="commit('relform')">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import toolbox from '@/components/toolbox/toolbox'
-import model from '@/model/user'
 export default {
   components: { toolbox },
   data () {
@@ -64,7 +94,22 @@ export default {
         name: '',
         index: 1,
         size: 10
-      }
+      },
+      dialogShow: false,
+      dialogTitle: '',
+      labelWidth: '80px',
+      rules: {
+        Name: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' }
+        ],
+        Mobile: [
+          { required: true, message: '请输入手机号码', trigger: 'blur' }
+        ],
+        RoleId: [
+          { required: true, message: '请选择角色', trigger: 'blur' }
+        ]
+      },
+      roles: []
     }
   },
   created () {
@@ -73,22 +118,88 @@ export default {
   },
   methods: {
     init () {
+      this.getRoles().then(() => {
+        this.get()
+      })
+    },
+    getRoles () {
+      return this.$api.roles.list().then(res => {
+        this.roles = res.data.data.list
+      })
+    },
+    get () {
       this.$api.users.list(this.search).then(res => {
         this.list = res.data.data.list
         this.total = res.data.data.total
       })
     },
-    add () {},
-    edit () {},
-    remove () {},
-    batchRemove () {},
+    select (selected) {
+      this.selected = selected
+    },
+    add () {
+      // 每次新增初始化表单
+      this.single = Object.assign({}, this.singleCopy)
+      this.dialogTitle = '新增'
+      this.dialogShow = true
+    },
+    edit (row) {
+      this.dialogTitle = '编辑'
+      this.dialogShow = true
+      this.single = Object.assign({}, row)
+    },
+    remove (row) {
+      this.$confirm(`确定删除用户 【${row.Name}】 吗?`, '提示', {
+        type: 'warning'
+      }).then(() => {
+        this.onRemove([row.Id])
+      }).catch(() => {})
+    },
+    batchRemove () {
+      let ids = this.selected.map(item => item.Id)
+      this.onRemove(ids)
+    },
+    commit () {
+      this.single.Id ? this.onEdit() : this.onAdd()
+    },
+    onAdd () {
+      this.$api.users.add(this.single).then(res => {
+        this.$notify.success({ title: '提示', message: '新增成功' })
+        this.dialogShow = false
+        this.get()
+      })
+    },
+    onEdit () {
+      this.$api.users.modify(this.single).then(res => {
+        this.$notify.success({ title: '提示', message: '修改成功' })
+        this.dialogShow = false
+        this.get()
+      })
+    },
+    onRemove (ids) {
+      this.$api.users.remove(ids).then(res => {
+        this.$notify.success({ title: '提示', message: '删除成功' })
+        this.get()
+      })
+    },
+    clearValidate (formName) {
+      this.$refs[formName].clearValidate()
+    },
     sizeChange ($event) {
       this.search.size = $event
-      this.init()
+      this.get()
     },
     indexChange ($event) {
       this.search.index = $event
-      this.init()
+      this.get()
+    }
+  },
+  filters: {
+    showName (value, source) {
+      let target = source.filter(item => item.Id === value)
+      if (target.length > 0) {
+        return target[0].Name
+      }
+      return value
     }
   }
 }
