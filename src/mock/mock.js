@@ -1,9 +1,9 @@
 import login from './login'
-import roles from './roles'
-import users from './users'
+import role from './role'
+import user from './user'
 
 export default {
   login,
-  roles,
-  users
+  role,
+  user
 }

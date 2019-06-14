@@ -34,6 +34,12 @@ let router = new Router({
           name: 'role',
           meta: { text: '角色' },
           component: () => import('./views/role/Role.vue')
+        },
+        {
+          path: 'authority',
+          name: 'authority',
+          meta: { text: '权限' },
+          component: () => import('./views/authority/Authority.vue')
         }
       ]
     },

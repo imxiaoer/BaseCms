@@ -3,13 +3,13 @@
  */
 
 import common from './common'
-import users from './users'
-import roles from './roles'
+import user from './user'
+import role from './role'
 import authority from './authority'
 
 export default {
-  users,
-  roles,
+  user,
+  role,
   common,
   authority
 }

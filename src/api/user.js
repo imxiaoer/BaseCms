@@ -5,7 +5,7 @@ import axios from '@/utils/http'
  * 用户接口定义
  */
 
-const users = {
+const user = {
   // 列表
   list (params = {}) {
     return axios.get(`${base.server1}/api/user/list`, { params: params })
@@ -31,4 +31,4 @@ const users = {
   }
 }
 
-export default users
+export default user

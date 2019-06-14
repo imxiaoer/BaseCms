@@ -9,7 +9,7 @@ let datas = [
   { Id: 2, Name: '业务员', CreateTime: '2018-01-02' },
   { Id: 3, Name: '采购员', CreateTime: '2018-01-02' }]
 
-const roles = {
+const role = {
   list: Mock.mock(new RegExp('/api/role/list'), 'get', option => {
     return {
       code: 200,
@@ -57,4 +57,4 @@ const roles = {
   })
 }
 
-export default roles
+export default role

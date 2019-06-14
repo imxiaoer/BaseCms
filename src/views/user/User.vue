@@ -1,15 +1,21 @@
 <template>
   <div class="box">
     <div class="search-box">
-      <el-form :inline="true" :model="search">
-        <el-form-item label="姓名">
+      <el-form :inline="true" :model="search" ref="searchForm">
+        <el-form-item label="姓名" prop="name">
           <el-input v-model="search.name" placeholder="请输入姓名"></el-input>
         </el-form-item>
-        <el-form-item label="手机">
-          <el-input v-model="search.name" placeholder="请输入手机号"></el-input>
+        <el-form-item label="手机" prop="mobile">
+          <el-input v-model="search.mobile" placeholder="请输入手机号"></el-input>
+        </el-form-item>
+        <el-form-item label="角色" prop="roleid">
+          <el-select v-model="search.roleid" placeholder="请选择角色">
+            <el-option v-for="r of roles" :label="r.Name" :value="r.Id" :key="r.Id"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="get">查询</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="get">查询</el-button>
+          <el-button type="info" @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -46,7 +52,8 @@
       @current-change="indexChange">
     </el-pagination>
 
-    <el-dialog :title="dialogTitle" :visible.sync="dialogShow" width="400px" @closed="clearValidate('relform')">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogShow" width="400px"
+      @closed="clearValidate('relform')" :close-on-click-modal="false">
       <el-form :model="single" ref="relform" :rules="rules">
         <el-form-item label="用户名称" :label-width="labelWidth" prop="Name">
           <el-input v-model.trim="single.Name" autocomplete="off"></el-input>
@@ -59,7 +66,7 @@
         <el-form-item label="手机号码" :label-width="labelWidth" prop="Mobile">
           <el-input v-model.trim="single.Mobile" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="现居地址" :label-width="labelWidth">
+        <el-form-item label="现居地址" :label-width="labelWidth" prop="Address">
           <el-input v-model.trim="single.Address" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -68,7 +75,6 @@
         <el-button type="primary" @click="commit('relform')">确 定</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
@@ -92,6 +98,8 @@ export default {
       selected: [],
       search: {
         name: '',
+        mobile: '',
+        roleid: '',
         index: 1,
         size: 10
       },
@@ -99,15 +107,9 @@ export default {
       dialogTitle: '',
       labelWidth: '80px',
       rules: {
-        Name: [
-          { required: true, message: '请输入角色名称', trigger: 'blur' }
-        ],
-        Mobile: [
-          { required: true, message: '请输入手机号码', trigger: 'blur' }
-        ],
-        RoleId: [
-          { required: true, message: '请选择角色', trigger: 'blur' }
-        ]
+        Name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+        Mobile: [{ required: true, message: '请输入手机号码', trigger: 'blur' }],
+        RoleId: [{ required: true, message: '请选择角色', trigger: 'blur' }]
       },
       roles: []
     }
@@ -137,15 +139,15 @@ export default {
       this.selected = selected
     },
     add () {
-      // 每次新增初始化表单
+      // 每次新增初始化表单     
       this.single = Object.assign({}, this.singleCopy)
       this.dialogTitle = '新增'
       this.dialogShow = true
     },
     edit (row) {
-      this.dialogTitle = '编辑'
-      this.dialogShow = true
       this.single = Object.assign({}, row)
+      this.dialogTitle = '编辑'
+      this.dialogShow = true   
     },
     remove (row) {
       this.$confirm(`确定删除用户 【${row.Name}】 吗?`, '提示', {
@@ -158,8 +160,17 @@ export default {
       let ids = this.selected.map(item => item.Id)
       this.onRemove(ids)
     },
-    commit () {
-      this.single.Id ? this.onEdit() : this.onAdd()
+    clearValidate (formName) {
+      this.$refs[formName].clearValidate()
+    },
+    commit (formName) {     
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.single.Id ? this.onEdit() : this.onAdd()
+        } else {
+          return false
+        }
+      })
     },
     onAdd () {
       this.$api.users.add(this.single).then(res => {
@@ -181,15 +192,16 @@ export default {
         this.get()
       })
     },
-    clearValidate (formName) {
-      this.$refs[formName].clearValidate()
-    },
     sizeChange ($event) {
       this.search.size = $event
       this.get()
     },
     indexChange ($event) {
       this.search.index = $event
+      this.get()
+    },
+    resetSearch () {
+      this.$refs['searchForm'].resetFields()
       this.get()
     }
   },

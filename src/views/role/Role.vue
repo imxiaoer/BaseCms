@@ -6,8 +6,9 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="CreateTime" label="日期" width="180"></el-table-column>
       <el-table-column prop="Name" label="角色名称"></el-table-column>
-      <el-table-column label="操作" fixed="right" width="150">
+      <el-table-column label="操作" fixed="right" width="235">
         <template slot-scope="scope">
+          <el-button size="mini" type="success" plain @click="edit(scope.row)">分配权限</el-button>
           <el-button size="mini" type="primary" plain @click="edit(scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="remove(scope.row)">删除</el-button>
         </template>
@@ -23,7 +24,8 @@
       :total="total">
     </el-pagination>
 
-    <el-dialog :title="dialogTitle" :visible.sync="dialogShow" width="400px" @closed="clearValidate('relform')">
+    <el-dialog :title="dialogTitle" :visible.sync="dialogShow" width="400px"
+      @closed="clearValidate('relform')" :close-on-click-modal="false">
       <el-form :model="single" ref="relform" :rules="rules">
         <el-form-item label="角色名称" :label-width="labelWidth" prop="Name">
           <el-input v-model.trim="single.Name" autocomplete="off"></el-input>
@@ -94,8 +96,14 @@ export default {
       let ids = this.selected.map(item => item.Id)
       this.onRemove(ids)
     },
-    commit (form) {
-      this.single.Id ? this.onEdit() : this.onAdd()
+    commit (formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.single.Id ? this.onEdit() : this.onAdd()
+        } else {
+          return false
+        }
+      })
     },
     onAdd () {
       this.$api.roles.add(this.single).then(res => {

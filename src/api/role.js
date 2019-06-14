@@ -5,7 +5,7 @@ import axios from '@/utils/http'
  * 角色接口定义
  */
 
-const roles = {
+const role = {
   // 列表
   list (params = {}) {
     return axios.get(`${base.server1}/api/role/list`, { params: params })
@@ -31,4 +31,4 @@ const roles = {
   }
 }
 
-export default roles
+export default role

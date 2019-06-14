@@ -18,16 +18,18 @@ for (var i = 0; i < 45; i++) {
   }))
 }
 
-const users = {
+const user = {
   list: Mock.mock(new RegExp('/api/user/list'), 'get', option => {
     let result = []
     let url = option.url
 
     // 获取地址栏参数
     let name = helper.getQuery(url, 'name')
+    // let mobile = helper.getQuery(url, 'mobile')
     let index = helper.getQuery(url, 'index')
     let size = helper.getQuery(url, 'size')
 
+    // 筛选姓名
     if (name) {
       datas.forEach(item => {
         if (item.Name.indexOf(name) !== -1) {
@@ -37,6 +39,15 @@ const users = {
     } else {
       result = datas
     }
+
+    // 筛选手机号
+    // if (mobile) {
+    //   datas.forEach(item => {
+    //     if (item.Mobile.indexOf(mobile) !== -1) {
+    //       result.push(item)
+    //     }
+    //   })
+    // }
 
     // 筛选后总条数
     let total = result.length
@@ -97,4 +108,4 @@ const users = {
   })
 }
 
-export default users
+export default user
