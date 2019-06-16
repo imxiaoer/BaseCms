@@ -41,7 +41,7 @@ export default {
     return {
       isCollapse: false,
       dialogShow: false,
-      notes: localStorage.getItem('notes') || 
+      notes: localStorage.getItem('notes') ||
       `便签中的内容会存储在本地，这样即便你关掉了浏览器，在下次打开时，依然会读取到上一次的记录。是个非常小巧实用的本地备忘录`
     }
   },

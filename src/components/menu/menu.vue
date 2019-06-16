@@ -26,7 +26,7 @@
       <el-menu-item index="/profile">基本资料 (空)</el-menu-item>
       <el-menu-item index="/password">修改密码 (空)</el-menu-item>
     </el-submenu>
-    <el-menu-item index="/echarts">
+    <el-menu-item index="authority">
       <i class="el-icon-share"></i>
       <span slot="title">权限</span>
     </el-menu-item>

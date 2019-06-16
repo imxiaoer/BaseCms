@@ -125,12 +125,12 @@ export default {
       })
     },
     getRoles () {
-      return this.$api.roles.list().then(res => {
+      return this.$api.role.list().then(res => {
         this.roles = res.data.data.list
       })
     },
     get () {
-      this.$api.users.list(this.search).then(res => {
+      this.$api.user.list(this.search).then(res => {
         this.list = res.data.data.list
         this.total = res.data.data.total
       })
@@ -139,7 +139,7 @@ export default {
       this.selected = selected
     },
     add () {
-      // 每次新增初始化表单     
+      // 每次新增初始化表单
       this.single = Object.assign({}, this.singleCopy)
       this.dialogTitle = '新增'
       this.dialogShow = true
@@ -147,7 +147,7 @@ export default {
     edit (row) {
       this.single = Object.assign({}, row)
       this.dialogTitle = '编辑'
-      this.dialogShow = true   
+      this.dialogShow = true
     },
     remove (row) {
       this.$confirm(`确定删除用户 【${row.Name}】 吗?`, '提示', {
@@ -163,7 +163,7 @@ export default {
     clearValidate (formName) {
       this.$refs[formName].clearValidate()
     },
-    commit (formName) {     
+    commit (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.single.Id ? this.onEdit() : this.onAdd()
@@ -173,21 +173,21 @@ export default {
       })
     },
     onAdd () {
-      this.$api.users.add(this.single).then(res => {
+      this.$api.user.add(this.single).then(res => {
         this.$notify.success({ title: '提示', message: '新增成功' })
         this.dialogShow = false
         this.get()
       })
     },
     onEdit () {
-      this.$api.users.modify(this.single).then(res => {
+      this.$api.user.modify(this.single).then(res => {
         this.$notify.success({ title: '提示', message: '修改成功' })
         this.dialogShow = false
         this.get()
       })
     },
     onRemove (ids) {
-      this.$api.users.remove(ids).then(res => {
+      this.$api.user.remove(ids).then(res => {
         this.$notify.success({ title: '提示', message: '删除成功' })
         this.get()
       })

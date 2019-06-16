@@ -7,7 +7,7 @@
           v-model="loginForm.username"
           autocomplete="off"
           placeholder="账 号:"
-          prefix-icon="el-icon-goods">
+          prefix-icon="el-icon-user">
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
@@ -16,7 +16,7 @@
           @keyup.native.enter="login('loginForm')"
           autocomplete="off"
           placeholder="密 码:"
-          prefix-icon="el-icon-time">
+          prefix-icon="el-icon-magic-stick">
           <i slot="suffix" class="el-input__icon el-icon-view btn-eye" @click="changeType"></i>
         </el-input>
       </el-form-item>

@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     init () {
-      this.$api.roles.list().then(res => {
+      this.$api.role.list().then(res => {
         this.list = res.data.data.list
         this.total = res.data.data.total
       })
@@ -106,21 +106,21 @@ export default {
       })
     },
     onAdd () {
-      this.$api.roles.add(this.single).then(res => {
+      this.$api.role.add(this.single).then(res => {
         this.$notify.success({ title: '提示', message: '新增成功' })
         this.dialogShow = false
         this.init()
       })
     },
     onEdit () {
-      this.$api.roles.modify(this.single).then(res => {
+      this.$api.role.modify(this.single).then(res => {
         this.$notify.success({ title: '提示', message: '修改成功' })
         this.dialogShow = false
         this.init()
       })
     },
     onRemove (ids) {
-      this.$api.roles.remove(ids).then(res => {
+      this.$api.role.remove(ids).then(res => {
         this.$notify.success({ title: '提示', message: '删除成功' })
         this.init()
       })
